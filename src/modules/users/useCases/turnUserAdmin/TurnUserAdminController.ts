@@ -15,7 +15,7 @@ class TurnUserAdminController {
 
       return response.status(200).send(user);
     } catch (error) {
-      return response.status(400).send(error.message);
+      return response.status(400).json({ message: error.message });
     }
   }
 }
