@@ -21,7 +21,6 @@ class CreateUserUseCase {
       });
     }
 
-    console.log(user);
     throw new Error("Email already registered");
   }
 }
