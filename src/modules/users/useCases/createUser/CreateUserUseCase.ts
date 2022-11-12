@@ -13,12 +13,16 @@ class CreateUserUseCase {
     // Check if the user already exists by email
     const user = this.usersRepository.findByEmail(email);
 
-    if (user) {
-      throw new Error("Email already registered");
+    if (!user) {
+      // instances usersRepository to use function create
+      return this.usersRepository.create({
+        name,
+        email,
+      });
     }
 
-    // instances usersRepository to use function create
-    return this.usersRepository.create({ name, email });
+    console.log(user);
+    throw new Error("Email already registered");
   }
 }
 

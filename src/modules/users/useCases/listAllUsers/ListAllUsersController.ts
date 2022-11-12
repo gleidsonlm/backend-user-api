@@ -10,11 +10,14 @@ class ListAllUsersController {
     // return 200 and array or 400 error message
     try {
       const { user_id } = request.headers;
-      const allUsers = this.listAllUsersUseCase.execute({ user_id });
+      // needs to parse into an object>propriety>value:string for Type check
+      const allUsers = this.listAllUsersUseCase.execute({
+        user_id: String(user_id),
+      });
 
-      return this.listAllUsersUseCase.execute(allUsers);
+      return response.status(200).send(allUsers);
     } catch (error) {
-      return response.status(400).json({ message: error.message });
+      return response.status(400).send(error.message);
     }
   }
 }

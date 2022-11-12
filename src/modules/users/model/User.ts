@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from "uuid";
 
 class User {
-  id: string;
+  id?: string;
   name: string;
   admin: boolean;
   email: string;
@@ -9,10 +9,8 @@ class User {
   updated_at: Date;
 
   // if id is not provided, create a new one with v4
-  constructor(id?: string) {
-    if (id) {
-      this.id = id;
-    } else {
+  constructor() {
+    if (!this.id) {
       this.id = uuidV4();
     }
     this.admin = false;
