@@ -1,0 +1,211 @@
+{
+    "openapi": "3.0.0",
+    "info":{
+        "title": "Backend User API Documentation",
+        "description": "Documentation for developers to use the Backend User API, source code is available at [GitHub](https://github.com/gleidsonlm/backend-user-api)",
+        "version": "0.1.0",
+        "contact": {
+            "name": "Issues",
+            "url": "https://github.com/gleidsonlm/backend-user-api/issues"
+        }
+    },
+    "paths":{
+        "/users": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Create a new user",
+                "description": "To create a new user, send your POST request with a JSON body with the values for 'name' and 'email'",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Gleidson Medeiros",
+                                    "description":"donotreply@gleidsonlm.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {"type":"string"},
+                                        "admin": {"type":"bolean"},
+                                        "created_at": {"type":"date"},
+                                        "updated_at": {"type":"date"},
+                                        "name": {"type":"string"}
+                                    }
+                                },
+                                "example": {
+                                    "id": "68049539-3a8b-41cc-aaf3-5c3c99a4f4f1",
+                                    "admin": false,
+                                    "created_at": "2022-11-12T16:27:25.684Z",
+                                    "updated_at": "2022-11-12T16:27:25.684Z",
+                                    "name": "Gleidson Medeiros"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": { "message": { "type":"string" } }
+                                },
+                                "example":{
+                                        "message": "Email already registered"
+                                }
+                            }
+                        }
+                    }
+                }   
+            },
+            "get": {
+                "tags": ["Users"],
+                "summary": "List all users",
+                "description": "To list all users, send your GET request with an admin 'user_id' in the header.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "user_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid/v4"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": { "type": "string" },
+                                            "admin": { "type": "bolean" },
+                                            "created_at": { "type": "date" },
+                                            "updated_at": { "type": "date" },
+                                            "name": { "type": "string" }
+                                        }
+                                    }
+                                },
+                                "example": [{
+                                    "id": "68049539-3a8b-41cc-aaf3-5c3c99a4f4f1",
+                                    "admin": false,
+                                    "created_at": "2022-11-12T16:27:25.684Z",
+                                    "updated_at": "2022-11-12T16:27:25.684Z",
+                                    "name": "Gleidson Medeiros"
+                                }]
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    },
+                                    "examples": {
+                                        "application/json":{
+                                            "User not found": {
+                                                "message": "User not found"
+                                            },
+                                            "User not admin": {
+                                                "message": "You're not allowed to list all users"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}/admin": {
+            "patch": {
+                "tags": ["Users"],
+                "summary": "Set this user as an administrator.",
+                "description": "To set an user as an administrator, send your PATCH request with the {user_id} in the URI.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name":"user_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid/v4"
+                        },
+                        "required": true,
+                        "description": "The {user_id} matching the user to be set an administrator."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string" },
+                                        "admin": { "type": "bolean" },
+                                        "created_at": { "type": "date" },
+                                        "updated_at": { "type": "date" },
+                                        "name": { "type": "string" }
+                                    }
+                                },
+                                "example": {
+                                    "id": "68049539-3a8b-41cc-aaf3-5c3c99a4f4f1",
+                                    "admin": false,
+                                    "created_at": "2022-11-12T16:27:25.684Z",
+                                    "updated_at": "2022-11-12T16:27:25.684Z",
+                                    "name": "Gleidson Medeiros"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "message": { "type": "string" }
+                                    },
+                                    "example": [{
+                                        "message": "User not found"
+                                    }]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
